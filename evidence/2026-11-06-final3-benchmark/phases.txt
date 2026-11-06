@@ -1,0 +1,8 @@
+home_static_start 517.18
+home_static_end 547.89
+pan_start 548.56
+pan_end 593.10
+switch_start 593.71
+switch_end 667.80
+search_start 668.39
+search_end 684.21

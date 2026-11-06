@@ -1,0 +1,87 @@
+============================================================
+OTTO — FLASH ANDROID 17 FRA WINDOWS-PC
+============================================================
+
+Mappen indeholder alt du skal bruge:
+  otto_r119_win.py      programmet der flasher
+  goco7.bin             loaderen til OTTO
+  OTTO_A17_super.simg   Android 17 (5,2 GB)
+  VEJLEDNING.txt        denne fil
+  installer\           Python, Zadig og de to Python-pakker (intet skal hentes)
+
+Gør ét trin ad gangen.
+
+
+TRIN 1 — KOPIÉR MAPPEN TIL PC'EN
+------------------------------------------------------------
+1. Sæt telefonen i pc'en med USB-kablet.
+2. Tryk på USB-beskeden på telefonen og vælg "Filoverførsel".
+3. Åbn Stifinder på pc'en. Klik på telefonen i venstre side.
+4. Gå ind i: Intern lagerplads > Download > qfil
+5. Træk mappen "otto" over på C:\
+   Så har du C:\otto med alle filerne.
+   (Den store fil tager 5-15 minutter.)
+
+
+TRIN 2 — INSTALLÉR PYTHON (kun første gang)
+------------------------------------------------------------
+1. Dobbeltklik C:\otto\installer\python-3.14.8-amd64.exe
+   VIGTIGT: sæt flueben i "Add python.exe to PATH" nederst,
+   og tryk "Install Now".
+2. Tryk på Start, skriv "cmd", åbn "Kommandoprompt".
+3. Skriv og tryk Enter:
+       py -m pip install --no-index --find-links C:\otto\installer\wheels pyusb libusb-package
+
+
+TRIN 3 — USB-DRIVER TIL OTTO (kun første gang)
+------------------------------------------------------------
+1. Sæt OTTO i EDL med knappen, og sæt den i pc'en.
+2. Dobbeltklik C:\otto\installer\zadig-2.9.exe (svar Ja).
+3. Menu "Options" > sæt flueben i "List All Devices".
+4. Vælg "QUSB__BULK" i listen (USB ID 05C6 9008).
+5. Vælg "WinUSB" til højre og tryk "Replace Driver"
+   (eller "Install Driver"). Vent til den er færdig.
+
+
+TRIN 4 — TJEK (skriver intet til OTTO)
+------------------------------------------------------------
+I Kommandoprompt:
+       cd C:\otto
+       py otto_r119_win.py selftest
+   -> skal slutte med: SELFTEST=PASS
+
+       py otto_r119_win.py preflight
+   -> skal slutte med: PREFLIGHT=OK (no writes)
+
+Hvis noget andet står, så stop og send skærmen til Claude.
+
+
+TRIN 5 — FLASH
+------------------------------------------------------------
+       py otto_r119_win.py flash
+   Skriv FLASH og tryk Enter for at starte.
+
+Du ser linjer som:
+   PROGRESS 512/6144 (8.3%) written=... same=... eta=.. min
+
+Tager ca. 30-45 minutter.
+
+
+HVIS FORBINDELSEN RYGER
+------------------------------------------------------------
+- Luk IKKE programmet.
+- Sæt bare OTTO i EDL igen med knappen.
+- Programmet finder OTTO selv og fortsætter hvor det slap.
+- Ingen ting skal trykkes eller skrives.
+
+
+FÆRDIG
+------------------------------------------------------------
+Når der står:
+   RESULT=FLASH_PASS
+er hele Android 17 skrevet og kontrolleret.
+
+Send filen C:\otto\R119_WIN_LOG.txt til Claude.
+Næste skridt (slette gamle data, første opstart) tager vi
+derefter sammen.
+============================================================

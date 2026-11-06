@@ -1,0 +1,26 @@
+===== system_b: 4236 -> 4237 entries, 11 differences
+CHANGED  /system/app/OttoLauncher/OttoLauncher.apk  [content]
+CHANGED  /system/app/OttoSpotify/OttoSpotify.apk  [content]
+CHANGED  /system/bin/lylinkservice  [content]
+CHANGED  /system/bin/lyscrservice  [content]
+CHANGED  /system/bin/otto_firstboot.sh  [content]
+ADDED    /system/etc/init/otto_final_f13.rc  mode=0644 owner=0:0 label=u:object_r:system_file:s0
+CHANGED  /system/etc/otto/boot/run.sh  [content]
+CHANGED  /system/etc/otto/boot/service.d/24-otto-a3a-gpu465.sh  [content]
+CHANGED  /system/etc/otto/boot/service.d/25-otto-hwc-vds-confirm.sh  [content]
+CHANGED  /system/etc/otto/navi/bin/otto_cargps.jar  [content]
+CHANGED  /system/lib/libscreenrecord.so  [content]
+
+===== system_b: 4236 -> 4237 entries, 11 differences
+CHANGED  /system/app/OttoLauncher/OttoLauncher.apk  [content]
+CHANGED  /system/app/OttoSpotify/OttoSpotify.apk  [content]
+CHANGED  /system/bin/lylinkservice  [content]
+CHANGED  /system/bin/lyscrservice  [content]
+CHANGED  /system/bin/otto_firstboot.sh  [content]
+ADDED    /system/etc/init/otto_final_f13.rc  mode=0644 owner=0:0 label=u:object_r:system_file:s0
+CHANGED  /system/etc/otto/boot/run.sh  [content]
+CHANGED  /system/etc/otto/boot/service.d/24-otto-a3a-gpu465.sh  [content]
+CHANGED  /system/etc/otto/boot/service.d/25-otto-hwc-vds-confirm.sh  [content]
+CHANGED  /system/etc/otto/navi/bin/otto_cargps.jar  [content]
+CHANGED  /system/lib/libscreenrecord.so  [content]
+

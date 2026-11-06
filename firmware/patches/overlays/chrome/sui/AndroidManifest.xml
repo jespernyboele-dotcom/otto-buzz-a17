@@ -1,0 +1,5 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="dk.otto.overlay.systemui">
+    <!-- No privacy-dot decor windows over every app. -->
+    <overlay android:targetPackage="com.android.systemui" android:isStatic="true" android:priority="2" />
+    <application android:hasCode="false" />
+</manifest>

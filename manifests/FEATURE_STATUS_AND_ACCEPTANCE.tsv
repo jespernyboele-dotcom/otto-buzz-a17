@@ -1,0 +1,29 @@
+FEATURE	EXPECTED	PRECONDITION	TEST_COMMAND_OR_ACTION	ENVIRONMENT	LAST_PASS	CURRENT_RESULT	LOG_PATH	PASS_CRITERION	SAFE_ROLLBACK	BLOCKER
+Clean cold boot (FINAL2)	Boots to OTTO Home without manual repair	FINAL2 flashed, slot _b active	power on normally	bench	2026-10-25 20:05 (FINAL2)	PASS (bench)	OTTO:/data/local/tmp/otto_postboot_verify_20261025_2005*.txt	V01-V05, V14, V44	EDL flash OTTO_A17_FINAL or FINAL2	-
+Cold boot in car	Same, on car power	in ID. Buzz	start car	ID.Buzz MIB4	FINAL2+R3: 26.10 13:17	PASS on FINAL2 (26.10, VDS on, projection at 62 s)	docs/history/2026-10-26-car-session.md	Home visible, CarPlay up < 60 s	same	
+Slot integrity	_b active, _a unbootable, no pending VAB update	after rescue	postboot V46, V49	bench	2026-10-25 20:05	PASS	postboot report	V46, V49	otto_rescue.py undo (only on request)	-
+Root (Magisk 30.7, no modules)	su works, no modules/Zygisk/Vector	-	postboot V06-V10	bench	2026-10-25 20:05	PASS	postboot report	V06-V10	-	-
+ART / dex2oat	apps compile, 0 denials	-	postboot V11-V13	bench	2026-10-25 20:05	PASS	postboot report	V11-V13	-	-
+SELinux enforcing	enforcing, 0 denials	-	postboot V29, V48	bench	2026-10-25 20:05	PASS	postboot report	V48 + denials total=0	-	-
+OTTO Home (launcher v10)	Home = OTTO, dock service, music listener	-	postboot V14-V17	bench	2026-10-25 20:05	PASS	postboot report	V14-V17	launcher /data copy can be uninstalled → /system copy (same v10)	-
+Overlays (no status bar, no corners, safe zone)	enabled	-	cmd overlay list; V18-V20	bench	2026-10-25 20:05	PASS	postboot report	[x] for 3 overlays	-	-
+CarPlay connection (RCP chain)	HU shows OTTO projection	in car, USB to HU	plug in, start	ID.Buzz MIB4	FINAL2+R3: 26.10	PASS on FINAL2 (owner 26.10: picture + touch; HU is one-finger, no pinch)	docs/history/2026-10-26-car-session.md	picture + touch on HU	EDL FINAL	
+Projection image quality while panning Maps	no smear/blocking	CarPlay up	pan map 20 s	ID.Buzz MIB4	FINAL2+R3 8 Mbit/s: 26.10	PASS at 8 Mbit/s (owner 26.10; encoder bursts 13-16 Mbit/s)	/data/adb/otto/logs/recorder.log; docs/history/2026-10-26-car-session.md	visually stable while panning	-	CLOSED: R3 8 Mbit/s via /data, no FINAL3
+Android Auto on HU	AA via OTTO	in car	start AA	ID.Buzz MIB4	UNKNOWN	NOT TESTED on FINAL2	-	AA visible + usable	-	owner car test
+Audio to HU	music/nav audio via bridge	CarPlay up	play Spotify	ID.Buzz MIB4	FINAL2+R3: 26.10	PASS on FINAL2 (owner 26.10: CarPlay sound; 30-min dropout check not done)	docs/history/2026-10-26-car-session.md	audible, no dropouts 30 min	-	30-min drive not done (parked)
+Steering wheel keys (next/prev/'Hey Google')	work	CarPlay up	press keys	ID.Buzz MIB4	FINAL2+R3: 26.10	PASS on FINAL2 (owner 26.10, incl. voice key)	docs/history/2026-10-26-car-session.md	each key acts once	-	
+NAVI → MIB4 cluster	turn-by-turn on cluster	route active in Maps/AA	drive route	ID.Buzz MIB4	FINAL2 NAVI 0.7: 26.10	PASS display (owner 26.10); route data frozen while Maps shows 'Searching for GPS'	navi.log on OTTO; docs/history/2026-10-26-car-session.md	cluster shows manoeuvres	EDL FINAL (NAVI 0.6)	PARKED: Maps 'Searching for GPS' while driving
+Car GPS as source	location from car	in car	drive_log / dumpsys location	ID.Buzz MIB4	FINAL2: 26.10 15:10	PASS on FINAL2 (state=CAR, 1 Hz, stale=0, hAcc 5 m, speed/bearing ok)	navi.log on OTTO; docs/history/2026-10-26-car-session.md	fix within 60 s	-	
+Wireless ADB :29527	reachable	Wi-Fi	adb connect 192.168.x.x:29527	bench	2026-10-25 20:05	PASS	postboot V32	connect OK	-	-
+Wi-Fi / BT / GNSS HAL	up	-	postboot V30-V34	bench	2026-10-25 20:05	PASS	postboot report	V30-V34	-	-
+USB identity / wired-wireless mode	05ac:12a8, rcp	-	postboot V35-V38	bench	2026-10-25 20:05	PASS	postboot report	V35-V38	-	-
+Factory menu (OTTO EN)	opens, adb prop labelled	-	postboot V27-V28	bench	2026-10-25 20:05	PASS	postboot report	V27-V28	-	-
+60 Hz display + HWC VDS	60 Hz, VDS on	-	postboot V39-V40; dumpsys display	bench	2026-10-25 20:05	PASS	postboot report	renderFrameRate 60	-	-
+Boot animation	OTTO logo	-	postboot V41	bench	2026-10-25 20:05	PASS	postboot report	V41	-	-
+Ad-block hosts	>1000 entries	-	postboot V42	bench	2026-10-25 20:05	PASS	postboot report	V42	-	-
+No OTA path	no client, no pending update	-	postboot V45-V46	bench	2026-10-25 20:05	PASS	postboot report	V45-V46	-	-
+Thermal / long drive	no throttling issue in 30 min	in car	drive_log.sh 40	ID.Buzz MIB4	partial 25.10 09:15 (10 min, max cpu 43 °C, FINAL)	NOT TESTED on FINAL2 (parked by owner 26.10)	otto_drive_1025_0915.txt	< throttle temp, no crash	-	parked by owner
+EDL lifeline	Sahara+Firehose reachable by button	OTTO off, EDL button	otto_rescue.py diagnose	EDL	2026-10-25 19:17	PASS	OTTO_RESCUE/RESCUE_LOG.txt	FIREHOSE=OK GPT_SUPER=OK	-	-
+ABL fastboot / fastbootd	reachable	-	recovery_gate.sh (G1/G2)	bench	2026-10-19	PASS (19.10, before migration; not re-tested)	migration 07_RECOVERY/RECOVERY_GATE_PASS.env	G1,G2 PASS	-	-
+A13 restore	A13 boots from backup	device in fastboot or EDL	recover_flash_super.sh a13 (fastboot) — NOT for routine use	bench	never	NOT TESTED (backup sha verified 25.10)	-	A13 boots	-	needs boot chain consistency analysis first (see EDL_RECOVERY_RUNBOOK)
+Video only while parked	video apps blocked while moving	-	-	ID.Buzz MIB4	UNKNOWN	UNKNOWN (implementation not located in this audit)	-	-	-	verify in launcher source

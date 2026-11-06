@@ -1,0 +1,2 @@
+e94695a2e67b8bd32b038eae6cbe9aa7cfe12f0a7955e61936faa4ef7bc2a931  OttoDockLeft.apk
+ff1c8d555d69389654363e07fdf70ab35e9c9b68f6b044db745daa7fe3285bd7  OttoSafeZone.apk

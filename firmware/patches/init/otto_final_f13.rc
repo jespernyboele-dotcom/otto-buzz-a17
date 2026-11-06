@@ -1,0 +1,6 @@
+# OTTO F13 (2026-10-31): vendor.atfwd (Android 13 modem AT forwarder) cannot run on A17 (its minijail seccomp policy
+# lacks gettid) and crash-restarts every ~5 s from ~15 s after power-on until the service.d script stops it after
+# BOOT_COMPLETED (~29 s); repeated crashes made init set sys.init.updatable_crashing (seen 2026-10-31). Stop it the
+# moment init starts it. Opt-out: remove this file. The service.d script 23 stays as a second line.
+on property:init.svc.vendor.atfwd=running
+    stop vendor.atfwd

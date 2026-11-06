@@ -1,0 +1,126 @@
+============================================================
+OTTO — FLASH FINAL2 (ANDROID 17) FRA WINDOWS-PC
+Dato: 25.10.2026
+============================================================
+
+HVAD ER NYT I FINAL2 (i forhold til FINAL fra 24.10)
+  + Launcher v10 (connectfront)
+  + NAVI 0.7 (otto_navi.sh)
+  + otto_firstboot.sh fra 25.10
+  - OTA-klienten (otto_ota.dex) er FJERNET. Ingen OTA mere -
+    fremover flashes altid via EDL eller bootloader.
+  Alt andet er byte-ens med FINAL. Se CHANGED_FILES.txt.
+
+HVAD DER SKER
+  Kun super-partitionen (Android-systemet) bliver skrevet,
+  præcis som 24.10. Firmware, partitionstabel og slot røres
+  ikke - OTTO bliver på slot _b.
+  Dine apps, indstillinger, logins, Wi-Fi og Spotify BLIVER.
+
+MAPPEN OTTO_A17_FINAL2 INDEHOLDER
+  otto_r119_win_final2.py      programmet der flasher FINAL2
+  OTTO_A17_FINAL2_super.simg   FINAL2-systemet (ca. 5,5 GB)
+  SHA256SUMS.txt               kontroltal
+  CHANGED_FILES.txt            alt der er ændret i forhold til FINAL
+  BUILD_LOG.txt                byggelog
+  VEJLEDNING_FINAL2_FLASH.txt  denne fil
+  goco7.bin ligger i C:\otto fra sidst.
+
+Gør ét trin ad gangen. Står der noget andet end det forventede,
+så stop og send skærmen til Claude.
+
+
+TRIN 1 — KOPIÉR MAPPEN TIL PC'EN
+------------------------------------------------------------
+1. Tag USB-kablet ud af telefonen og sæt det i igen (så Windows
+   ser de nyeste filer).
+2. Vælg "Filoverførsel" på telefonen.
+3. Stifinder: telefonen > Intern lagerplads > Download > qfil > otto
+4. Træk mappen "OTTO_A17_FINAL2" over i C:\otto
+   Så har du C:\otto\OTTO_A17_FINAL2
+   (Den store fil tager 5-15 minutter.)
+
+
+TRIN 2 — TJEK PROGRAMFILEN (sidst blev en fil skåret af!)
+------------------------------------------------------------
+1. Start > skriv "cmd" > åbn "Kommandoprompt".
+2. Skriv:
+       cd C:\otto\OTTO_A17_FINAL2
+       certutil -hashfile otto_r119_win_final2.py SHA256
+   -> skal give:
+       77429ac6f6ea590797a935423f6b531fc9c536c7b121db12d22ef95a839cdcf8
+   Passer det ikke: kopiér filen igen (trin 1).
+
+
+TRIN 3 — TJEK IMAGE-FILEN (skriver intet, OTTO behøver ikke være tilsluttet)
+------------------------------------------------------------
+       py otto_r119_win_final2.py selftest
+   Tager et par minutter.
+   -> skal slutte med:
+       EXPANDED_SHA256=ce324a0714bde6773da3c14ab03dea3615bf37a1908ff49965cc8f0d8da764e6
+       SELFTEST=PASS
+   FAIL = den store fil er ikke kopieret helt. Kopiér igen.
+
+
+TRIN 4 — OTTO I EDL OG TJEK FORBINDELSEN (skriver intet)
+------------------------------------------------------------
+1. Tag strømmen fra OTTO.
+2. Hold EDL-knappen inde, sæt kablet i pc'en, slip knappen.
+3. Skriv:
+       py otto_r119_win_final2.py preflight
+   -> skal vise:  FIREHOSE=OK GPT_SUPER=OK
+   -> og slutte med:  PREFLIGHT=OK (no writes)
+
+
+TRIN 5 — FLASH
+------------------------------------------------------------
+       py otto_r119_win_final2.py flash
+   Skriv FLASH og tryk Enter.
+
+Du ser linjer som:
+   PROGRESS 512/6144 (8.3%) written=... same=... eta=.. min
+Denne gang skrives der mere end blot de tre filer: OTA'en
+efterlod rester i super, og dem overskriver flashen også.
+Det er forventet.
+
+Til sidst læser programmet HELE super igen:
+   VERIFY 1024/6144 ... VERIFY 6144/6144
+Tager ca. 30-45 minutter i alt.
+
+
+HVIS FORBINDELSEN RYGER
+------------------------------------------------------------
+- Luk IKKE programmet. Sæt OTTO i EDL igen med knappen -
+  programmet fortsætter selv.
+- Er programmet lukket: kør "py otto_r119_win_final2.py flash"
+  igen - det husker hvor langt det nåede
+  (R119_LEDGER_a17_final2.txt).
+
+
+FÆRDIG
+------------------------------------------------------------
+Når der står:
+   RESULT=FLASH_PASS  A17 super written and fully SHA-verified
+1. Tag kablet ud af pc'en.
+2. Giv OTTO strøm normalt (ikke EDL-knappen).
+3. Du skal se OTTO-boot-logoet.
+4. Sæt OTTO på Wi-Fi og sig til Claude: "OTTO er online".
+   Claude kører efter-tjekket.
+
+
+GØR IKKE
+------------------------------------------------------------
+- Kør IKKE "wipe-userdata".
+- Brug IKKE programmet fra OTTO_A17_FINAL til dette image -
+  det kender kun FINAL og vil afvise det.
+- Installer ALDRIG otto_ota_1.zip.
+
+
+HVIS NOGET GÅR GALT - TILBAGE TIL FINAL (24.10)
+------------------------------------------------------------
+       cd C:\otto\OTTO_A17_FINAL
+       del R119_LEDGER_a17.txt
+       py otto_r119_win_final.py flash
+(Ledger-filen skal slettes, ellers tror programmet at det
+allerede er færdigt.) Sig til Claude først.
+============================================================

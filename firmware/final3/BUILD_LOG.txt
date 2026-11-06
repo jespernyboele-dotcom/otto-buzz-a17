@@ -1,0 +1,52 @@
+== OTTO A17 FINAL3 build  2026-11-01 15:25:37
+  base odm_b: FINAL2 54edecfc37610caa
+  base system_b: FINAL2 b28bbae8a69f7fd2
+  base system_dlkm_b: FINAL2 32a3901dc11a3e64
+  base vendor_b: FINAL2 7979847ed28b54d9
+  base vendor_dlkm_b: FINAL2 037a629ae790514a
+== system_b
+  /system/lib/libscreenrecord.so  <- fa8c668f0daf13dd
+  /system/bin/lylinkservice  <- 9b3b76b5f5cf9240
+  /system/bin/lyscrservice  <- 8c727747e1457169
+  /system/etc/otto/navi/bin/otto_cargps.jar  <- 84d5e59256fadb5e
+  /system/etc/otto/boot/run.sh  <- 5e105e9ae282a5f3
+  /system/etc/otto/boot/service.d/24-otto-a3a-gpu465.sh  <- df1a1c3f5fadc637
+  /system/etc/otto/boot/service.d/25-otto-hwc-vds-confirm.sh  <- 0dbd04128b269043
+  /system/etc/init/otto_final_f13.rc  <- 8cdea022a263ee6f
+  /system/bin/otto_firstboot.sh  <- 4fa8184307784705
+  /system/app/OttoLauncher/OttoLauncher.apk  <- 9410947491de64cb
+  /system/app/OttoSpotify/OttoSpotify.apk  <- 2ac2d47b1a23a1c2
+  e2fsck: /: 4247/5280 files (7.9% non-contiguous), 967568/1058560 blocks
+  odm/system_dlkm/vendor/vendor_dlkm: byte-identical to FINAL2
+== super
+  partitions 5940547584 B of 6438256640 (free 497709056)
+  lpunpack: all partitions byte-identical to the inputs
+  raw  5cac116531d47d02a36348738f2748f9021a2511d2e8ac1451b18157a804c576
+  simg 5c50805146bb49c90c6a0186f10fca09bdb2368708415a13458e9f8d702ade72
+== changed files system_b FINAL2 -> FINAL3
+  ===== system_b: 4236 -> 4237 entries, 11 differences
+  CHANGED  /system/app/OttoLauncher/OttoLauncher.apk  [content]
+  CHANGED  /system/app/OttoSpotify/OttoSpotify.apk  [content]
+  CHANGED  /system/bin/lylinkservice  [content]
+  CHANGED  /system/bin/lyscrservice  [content]
+  CHANGED  /system/bin/otto_firstboot.sh  [content]
+  ADDED    /system/etc/init/otto_final_f13.rc  mode=0644 owner=0:0 label=u:object_r:system_file:s0
+  CHANGED  /system/etc/otto/boot/run.sh  [content]
+  CHANGED  /system/etc/otto/boot/service.d/24-otto-a3a-gpu465.sh  [content]
+  CHANGED  /system/etc/otto/boot/service.d/25-otto-hwc-vds-confirm.sh  [content]
+  CHANGED  /system/etc/otto/navi/bin/otto_cargps.jar  [content]
+  CHANGED  /system/lib/libscreenrecord.so  [content]
+  
+  ===== system_b: 4236 -> 4237 entries, 11 differences
+  CHANGED  /system/app/OttoLauncher/OttoLauncher.apk  [content]
+  CHANGED  /system/app/OttoSpotify/OttoSpotify.apk  [content]
+  CHANGED  /system/bin/lylinkservice  [content]
+  CHANGED  /system/bin/lyscrservice  [content]
+  CHANGED  /system/bin/otto_firstboot.sh  [content]
+  ADDED    /system/etc/init/otto_final_f13.rc  mode=0644 owner=0:0 label=u:object_r:system_file:s0
+  CHANGED  /system/etc/otto/boot/run.sh  [content]
+  CHANGED  /system/etc/otto/boot/service.d/24-otto-a3a-gpu465.sh  [content]
+  CHANGED  /system/etc/otto/boot/service.d/25-otto-hwc-vds-confirm.sh  [content]
+  CHANGED  /system/etc/otto/navi/bin/otto_cargps.jar  [content]
+  CHANGED  /system/lib/libscreenrecord.so  [content]
+== DONE

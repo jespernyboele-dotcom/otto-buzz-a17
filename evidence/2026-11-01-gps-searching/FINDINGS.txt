@@ -1,0 +1,25 @@
+OTTO GPS "Searching for GPS" during a drive — findings (2026-11-01, live, owner driving; times local CET)
+PROVEN
+- 12:36-12:43: the CTZGPS FIFO (written by lylinkservice from the car's iAP2 location) carried a frozen position at home with
+  fresh UTC and speed 0 (raw $GPRMC/$PASCD captured); it moved again after ~12:43. Cause of that window: UNRESOLVED.
+- From 12:43 the Android gps provider (OttoCarGps, mock) updated every second with correct, moving positions (trace
+  /data/local/tmp/gpstrace_1244.log); the fused provider too. Maps received thousands of locations.
+- Google Maps navigation nevertheless shows "Searching for GPS" (speed "--", arrow frozen). Restarting Maps recovers it, but in
+  navigation it loses GPS again after ~30-60 s (screenshot series navwatch_nopredict_sheet.png, 12:59-13:12).
+- Bridge without predicted fixes (--max-predict-ms=0, test 12:56): FusedLocation "blocked - too fast" fell from 704/min to a few,
+  but navigation still lost GPS after ~30-60 s -> the P5 prediction hypothesis is REJECTED as the cause.
+STRONGLY_SUPPORTED (to test offline, not while driving)
+- Maps navigation judges GPS from more than the location stream (GNSS status / satellites). OTTO's own GNSS chip only sees weak
+  satellites (avg C/N0 ~23 dB, no fix), and the car fixes arrive as mock locations without satellite info. This matches the
+  26 Oct "Searching for GPS".
+NEXT_REQUIRED_FACT: what Maps uses to declare "Searching for GPS" while locations are fresh (e.g. Location extras "satellites",
+  GnssStatus usedInFix). Test parked: bridge variant that adds satellite extras to its locations, run from /data (no image change).
+Pre-existing before FINAL3 (seen 26 Oct, before F6/F7); FINAL3 does not change Maps or the GNSS path.
+
+RESULT 2026-11-01 15:32-15:42 (owner driving, home route 45 km):
+PROVEN (one 9-min drive, against repeated failures within 30-60 s without it): the bridge variant that adds Location extras
+  satellites=12 (gps_sat, jar 38095980…, --sat-extra=12) keeps Google Maps navigation on GPS. The speed field and the
+  distances/ETA update all the way; "Searching for GPS" never appears (navwatch_satextra_PASS_sheet.png, speeds 9-21 m/s).
+CAUSE (STRONGLY_SUPPORTED): Maps navigation rejects fixes without a satellite count; the car's fixes reach Android as mock
+  locations without one.
+FIX for FINAL3: otto_cargps with satellites in the extras by default (no change to otto_navi.sh needed), then the FINAL3 rebuild.

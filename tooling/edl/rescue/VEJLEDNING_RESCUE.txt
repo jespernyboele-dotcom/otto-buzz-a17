@@ -1,0 +1,158 @@
+============================================================
+OTTO — REDNING EFTER OTA1  (TRIN 1: DIAGNOSE, KUN LÆSNING)
+Dato: 25.10.2026
+============================================================
+
+HVAD ER SKET
+  OTA1 skrev hele slot _a om (også bootloader-firmwaren).
+  Siden starter OTTO slet ikke. EDL virker stadig - den sidder
+  i chippen og kan ikke ødelægges af en opdatering.
+  Slot _b (det der virkede før) blev IKKE skrevet af OTA'en.
+
+HVAD DETTE TRIN GØR
+  Programmet LÆSER kun fra OTTO. Der skrives intet.
+  Det finder ud af:
+   - om OTTO står til at starte fra _a eller _b
+   - om hver partition på _a er ens med _b
+   - kopi af partitionstabellen (GPT) + misc, devinfo,
+     metadata og starten af super
+  Claude bruger resultatet til at lave selve rettelsen
+  (skifte OTTO tilbage til _b) i næste trin.
+
+Gør ét trin ad gangen. Står der noget andet end det forventede,
+så stop og send skærmen til Claude.
+
+
+TRIN 1 — KOPIÉR MAPPEN TIL PC'EN
+------------------------------------------------------------
+1. Sæt telefonen i pc'en med USB-kablet.
+2. Tryk på USB-beskeden på telefonen og vælg "Filoverførsel".
+3. I Stifinder: telefonen > Intern lagerplads > Download > qfil > otto
+4. Træk mappen "OTTO_RESCUE" over i C:\otto
+   Så har du C:\otto\OTTO_RESCUE
+5. Tjek at disse også findes (fra sidst):
+     C:\otto\goco7.bin
+     C:\otto\OTTO_A17_FINAL\otto_r119_win_final.py
+   OTTO_RESCUE bruger forbindelseskoden derfra.
+
+
+TRIN 2 — OTTO I EDL
+------------------------------------------------------------
+1. Tag strømmen fra OTTO.
+2. Hold EDL-knappen inde, sæt kablet i pc'en, slip knappen.
+   (Samme måde og samme kabel som sidst.)
+
+
+TRIN 3 — KØR DIAGNOSEN
+------------------------------------------------------------
+1. Tryk på Start, skriv "cmd", åbn "Kommandoprompt".
+2. Skriv (Enter efter hver linje):
+       cd C:\otto\OTTO_RESCUE
+       py otto_rescue.py diagnose
+3. Du ser linjer som:
+       FIREHOSE=OK GPT_SUPER=OK
+       GPT primary ... SAME
+       SLOT abl   SAME/DIFF  a:... b:...
+       DUMP misc.img ...
+4. Tager nogle minutter. Til sidst skal der stå:
+       RESULT=DIAG_DONE (no writes)
+
+Står der SESSION_LOST: intet er skrevet. Sæt OTTO i EDL
+igen og kør samme kommando igen.
+
+
+TRIN 4 — SEND RESULTATET TIL CLAUDE
+------------------------------------------------------------
+1. I C:\otto\OTTO_RESCUE er der nu en mappe DIAG_<dato_tid>
+   og filen RESCUE_LOG.txt.
+2. Kopiér BEGGE tilbage til telefonen:
+     Intern lagerplads > Download > qfil > otto > OTTO_RESCUE
+3. Sig til Claude: "diagnosen er på telefonen".
+OTTO kan blive i EDL eller tages fra strøm - det er lige meget.
+
+
+DIAGNOSEN (25.10 kl. 19:17) VISTE
+------------------------------------------------------------
+- Alle 27 partitioner er byte-ens på _a og _b. Firmwaren er hel.
+- OTTO står til at starte _a. Bootloaderen har prøvet 3 gange
+  (boot_a retry 7 -> 4). Det er Android på _a der hænger, fordi
+  den skal samles af OTA-snapshots i /data.
+- misc: OTA-status SNAPSHOTTED, kilde = _b.
+
+
+============================================================
+REDNING TRIN 2 — SÆT OTTO TILBAGE TIL _b
+============================================================
+
+HVAD DER SKRIVES (og intet andet)
+  1. Partitionstabellen (GPT, begge kopier): _b bliver aktiv,
+     _a spærres. Svarer til "fastboot set_active b".
+  2. Én sektor i misc: OTA-status SNAPSHOTTED -> CANCELLED.
+     Svarer til "fastboot snapshot-update cancel".
+  Ingen firmware, intet super, ingen userdata. Dine apps og
+  data bliver.
+  Programmet skriver KUN hvis OTTO er byte-ens med diagnosen.
+  Ser noget anderledes ud, stopper det før første skrivning.
+
+TRIN 2.1 — KOPIÉR DET NYE PROGRAM TIL PC'EN
+------------------------------------------------------------
+1. Fra telefonen: Download > qfil > otto > OTTO_RESCUE
+2. Kopiér otto_rescue.py og VEJLEDNING_RESCUE.txt til
+   C:\otto\OTTO_RESCUE  (vælg "Erstat").
+3. Mappen C:\otto\OTTO_RESCUE\DIAG_20261025_191728 SKAL ligge
+   der stadig - programmet bruger den.
+
+TRIN 2.2 — OTTO I EDL (som før)
+------------------------------------------------------------
+Tag strømmen, hold EDL-knappen, sæt kablet i pc'en, slip.
+
+TRIN 2.3 — SKIFT TIL _b
+------------------------------------------------------------
+       cd C:\otto\OTTO_RESCUE
+       py otto_rescue.py setslot-b
+   Skriv SLOT B og tryk Enter.
+   -> du ser:
+       FIREHOSE=OK GPT_SUPER=OK
+       gpt_backup: written + verified
+       gpt_primary: written + verified
+       misc: written + verified
+       RESULT=SLOT_B_DONE ...
+   Tager under et minut.
+
+Står der SESSION_LOST: sæt OTTO i EDL igen og kør samme
+kommando igen. Den ser selv hvad der allerede er gjort.
+Står der "neither the diagnose state nor the fixed state":
+STOP - intet er skrevet - send skærmen til Claude.
+
+TRIN 2.4 — START OTTO
+------------------------------------------------------------
+1. Tag kablet ud af pc'en.
+2. Giv OTTO strøm normalt (ikke EDL-knappen).
+3. Første opstart kan tage lidt længere (Android rydder
+   OTA-resterne op). Du skal se OTTO-boot-logoet.
+4. Sæt OTTO på Wi-Fi og sig til Claude: "OTTO er online".
+   Claude tjekker at den kører på _b og rydder op.
+
+HVIS DEN STADIG IKKE STARTER (vent 5 minutter)
+------------------------------------------------------------
+Sig til Claude. Næste skridt er FINAL-flashen fra 24.10
+(VEJLEDNING_FINAL_FLASH.txt, trin 5-6), som skriver super
+igen med det system der virkede.
+Fortryd trin 2 (sætter GPT + misc tilbage som i diagnosen):
+       py otto_rescue.py undo     (skriv UNDO)
+Kun hvis Claude beder om det.
+
+BAGEFTER
+------------------------------------------------------------
+Launcher v10, navi 0.7 og firstboot lægges på via root -
+uden OTA.
+
+
+GØR IKKE
+------------------------------------------------------------
+- Kør IKKE otto_r119_win_final.py flash nu - den skriver kun super
+  og flytter ikke OTTO tilbage til _b. Den kommer måske senere.
+- Kør IKKE wipe-userdata.
+- Installer IKKE otto_ota_1.zip igen. Der laves aldrig mere OTA -
+  fremover flashes altid via EDL eller bootloader.
+============================================================

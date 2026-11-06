@@ -1,0 +1,11 @@
+; OTTO plat additions (system_b/etc/selinux/plat_sepolicy.cil, appended). 2026-10-24.
+; persist.ctz.adb.config already has its own type in this image (otto_ctz_adb_prop, FINAL-R1), which system_app may set.
+; The one property denial ever recorded is Ottocast's CarPlay app (com.ap.play, system_app) setting LY_HU_INFO, which
+; falls under default_prop. Today a broad test rule allows it (system_app -> all of default_prop); this keeps exactly
+; that behaviour for this one property only.
+(type otto_ly_hu_info_prop)
+(roletype object_r otto_ly_hu_info_prop)
+(typeattributeset property_type (otto_ly_hu_info_prop))
+(typeattributeset system_property_type (otto_ly_hu_info_prop))
+(allow system_app otto_ly_hu_info_prop (property_service (set)))
+(allow domain otto_ly_hu_info_prop (file (read open getattr map)))

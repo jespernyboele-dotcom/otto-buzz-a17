@@ -1,0 +1,6 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="dk.otto.overlay.safezone">
+    <!-- Mutable (not static): OTTO turns the safe zone on for Home and off for other apps at runtime.
+         v2 (2026-11-01): the left dock strip is part of the Home zone too, so it never moves; priority 2 > dockleft. -->
+    <overlay android:targetPackage="android" android:category="com.android.internal.display_cutout_emulation" android:priority="2" />
+    <application android:hasCode="false" />
+</manifest>

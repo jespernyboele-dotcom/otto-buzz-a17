@@ -1,0 +1,88 @@
+# OTTO FINAL-R1 native boot layer (GOLD core).
+# ly_link itself is registered and started by init_boot_b overlay.d/otto_lylink.rc (unchanged).
+# All services below run as root in u:r:magisk:s0, the domain ly_link already uses.
+
+on post-fs-data
+    # wireless ADB on tcp 29527 (same property the proven R7 hook and service.d/95 used)
+    setprop service.adb.tcp.port 29527
+    # lylinkservice video watchdog must not reboot the box; LinkService package for lyscrservice
+    setprop persist.ly.no.reboot 1
+    setprop persist.ly.wificp.packagename com.cartizan.mylink
+
+on boot
+    start otto_usb0_route
+
+on property:sys.boot_completed=1
+    restart adbd
+    start otto_firstboot
+    start otto_audio_bridge
+    start otto_nav_bridge
+    start otto_health
+
+service otto_usb0_route /system/bin/otto_usb0_route.sh
+    class late_start
+    user root
+    group root
+    seclabel u:r:magisk:s0
+    disabled
+
+service otto_audio_bridge /system/bin/otto_audio_bridge.sh
+    class late_start
+    user root
+    group root
+    seclabel u:r:magisk:s0
+    disabled
+    oneshot
+
+service otto_nav_bridge /system/bin/otto_nav_bridge.sh
+    class late_start
+    user root
+    group root
+    seclabel u:r:magisk:s0
+    disabled
+    oneshot
+
+service otto_firstboot /system/bin/otto_firstboot.sh
+    class late_start
+    user root
+    group root
+    seclabel u:r:magisk:s0
+    disabled
+    oneshot
+
+service otto_health /system/bin/otto_health.sh
+    class late_start
+    user root
+    group root
+    seclabel u:r:magisk:s0
+    disabled
+
+# ---- OTTO FINAL (2026-10-24): the former Magisk modules and boot scripts, now in the image ----
+# Same domain as above (u:r:magisk:s0); Magisk stays for root and that domain.
+on post-fs-data
+    exec_start otto_boot_pfd
+
+on property:sys.boot_completed=1
+    start otto_boot_late
+    start otto_navi
+
+service otto_boot_pfd /system/bin/sh /system/etc/otto/boot/run.sh post-fs-data
+    user root
+    group root
+    seclabel u:r:magisk:s0
+    disabled
+    oneshot
+
+service otto_boot_late /system/bin/sh /system/etc/otto/boot/run.sh service
+    user root
+    group root
+    seclabel u:r:magisk:s0
+    disabled
+    oneshot
+
+service otto_navi /system/bin/sh /system/etc/otto/navi/start.sh
+    user root
+    group root
+    seclabel u:r:magisk:s0
+    disabled
+    oneshot

@@ -1,0 +1,29 @@
+# firmware / binaries / device data — never in git
+*.img
+*.simg
+*.raw
+*.gz
+*.xz
+*.zst
+*.bin
+*.apk
+*.jar
+*.dex
+*.so
+*.zip
+*.h264
+DIAG_*/
+# keys and secrets
+*.key
+*.pem
+*.jks
+*.keystore
+*.p12
+wifi.conf
+*.env
+# local state
+R119_LEDGER_*.txt
+R119_WIN_LOG.txt
+RESCUE_LOG.txt
+__pycache__/
+*.pyc

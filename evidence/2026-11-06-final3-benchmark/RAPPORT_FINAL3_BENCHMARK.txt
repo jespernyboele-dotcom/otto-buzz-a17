@@ -1,0 +1,51 @@
+OTTO A17 FINAL3 — AFSLUTTENDE FUNKTIONSTEST OG BENCHMARK (2026-11-06)
+Image: FINAL3 R2 (simg 5c508051, raw 5cac1165), slot _b, flashet via EDL. Bil: VW ID. Buzz, MIB4. Alt i denne mappe.
+
+A. INTEGRITET: 74/74 PASS (POSTBOOT_VERIFY_RESULT_20261106.txt). 0 SELinux-afvisninger, ingen Magisk-moduler,
+   alle 11 filer i /system med den sha der blev testet live, R8 med High profile, 12 Mbit/s, GPS med satellitter.
+   (Kontrolscriptets egne sha-tjek havde en fejl i første kørsel; rettet og kørt igen.)
+
+B. OPSTART (3 genstarter, skærmvideo boot1-3.mp4):
+   Boot-animation og logo uafbrudt i alle 3 (ingen Android-skærme, intet blink).
+   VDS bekræftet 39,3-40,1 s. Første billede til bilen 26,6-27,3 s. Autoplay af Podimo 3/3.
+   Logo -> Home: 51,8 s og 50,1 s til helt klar Home. Opstart 3: logoet tonede ud ved 38,0 s FØR Home var klar
+   (Android Autos usynlige aktivitet genskabte panelet). Rettet i launcher v20 (ikke installeret endnu).
+
+C. PROJEKTIONSKÆDEN (bilen parkeret, CarPlay aktiv):
+   60 fps-video: display 60,0/s, videolag 60-61/s. Encoder (rigtige billeder/s):
+     56,2 med GPU-komponeret skærmkopi (isGpu=true, som FINAL3 bootede efter oprydning)
+     59,2 med hardware-skærmkopi (HWC-VDS, isGpu=false)  <- forskellen er et kapløb i opstarten
+   30 fps-video: 30,0/s. Ingen syntetiske billeder. Ca. 9-11 Mbit/s. GPU ca. 70 % ved 465 MHz, maks. 60,6 C.
+   Brug: stille Home 12/s 0,1 Mbit/s; panorering 34/s; app-skift 37/s, CPU-pres 25 %, maks. 69 C; søgning 15/s.
+   Ingen pakketab ("overfull"), forsinkede pakker eller encoder-genstarter i loggen.
+
+D. KAMERA PÅ MIB4 (ejerens 120 fps slowmotion, PXL_20261106_101531779.mp4):
+   MIB4 viste 1162 af 1168 kildebilleder = 99,5 % = ca. 59,7 af 60 billeder/s (denne opstart: hardware-skærmkopi).
+   Ingen udtværing under panorering eller de 5 app-skift. Dobbeltkonturer ved hurtig panorering = kamera/panel
+   mellem to billeder, ikke videofejl (camera_pan.png).
+   Fund: Home kommer langsomt frem på bilens skærm: Podimo står der 1-2+ s efter tryk på Home (camera_home_switches.png).
+
+E. FUNKTIONER: dock, Medier, Apps, alle apps, widget (vejr fold ud/Tilbage, play/pause, swipe, aktiv afspiller),
+   Home-søgning med tastatur, Spotify med fast dock, Podimo med Tilbage/Hjem-pille, Indstillinger: alle OK.
+   Stemmeknap: rattets vej (KEYCODE_VOICE_ASSIST) åbner Gemini med aktiv mikrofon; VOICE_ASSIST giver "Lytter...".
+   Om rattets knap faktisk lytter: afgøres på køreturen (G).
+
+F. UDHOLDENHED 45 min: hukommelse 4,26 -> 4,39 GB ledig, CPU-pres 7,7 % (maks. 11,7), IO/hukommelsespres 0,
+   49-54 C, 0 nye nedbrud/ANR, CarPlay-stakken uden genstart, GPS frisk, Podimo spillede uafbrudt.
+   (1 kendt nedbrud ved boot: scrcpy's første forsøg 25 s "Could not create display", håndteres af genforsøg.)
+
+G. KØRETUR: ejeren.
+
+ÅBENT / NÆSTE (ikke i FINAL3):
+  1. VDS-rettelse: genskab skærmkopien hvis den er GPU-komponeret -> ca. 59 i stedet for 56 billeder/s. Bevist manuelt.
+  2. Home-skift tager 1-2+ s på bilens skærm.
+  3. Fast venstre dock: første design (to cutout-områder) gav sort skærm og blev rullet tilbage. Nyt design kræves.
+  4. Launcher v20 (logo venter på det viste panels indhold) er bygget, ikke installeret.
+
+TILLÆG (2026-11-06, efter rapporten): Home-skiftet rettet i launcher v21b (c01562bc, app-opdatering oven på FINAL3).
+  Før: Maps i fuld bredde ved +0,9 s, sort omlægning, Home klar ca. 3,6 s. Nu: safe zone klar +0,63 s, Maps +0,66 s
+  direkte i rigtig bredde. Ejeren bekræfter: "home kommer hurtigt nu". v21b indeholder også logo-rettelsen fra v20.
+
+G. KØRETUR (ejeren, 2026-11-06): stemmeknappen på rattet virker; GPS virker, prikken følger kortet hele tiden.
+   TESTPLAN A-G GENNEMFØRT. Ejeren: "vi er i mål". VDS-rettelsen (56 -> ~59 billeder/s ved opstarter med GPU-kopi)
+   og den faste venstre dock er IKKE med og er ikke aktuelle nu.

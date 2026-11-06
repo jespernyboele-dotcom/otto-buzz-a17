@@ -1,0 +1,92 @@
+start 2026-11-06 08:54:08 lylink=1527 lyscr=1526 crashes=1
+1 up=958 memMB=4258 psi_cpu=11.72 io=0.02 mem=0.12 tmax=54 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+15m58s87ms enc=[129 kbit/s real=131 synth=0] state=P
+state=PLAYING
+2 up=1019 memMB=4257 psi_cpu=9.17 io=0.00 mem=0.04 tmax=52 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+16m59s77ms enc=[126 kbit/s real=126 synth=0] state=P
+state=PLAYING
+3 up=1080 memMB=4290 psi_cpu=8.09 io=0.00 mem=0.01 tmax=52 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+17m59s89ms enc=[137 kbit/s real=138 synth=0] state=P
+state=PLAYING
+4 up=1140 memMB=4275 psi_cpu=7.69 io=0.00 mem=0.00 tmax=53 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+18m59s981ms enc=[133 kbit/s real=133 synth=0] state=P
+state=PLAYING
+5 up=1201 memMB=4278 psi_cpu=7.55 io=0.00 mem=0.00 tmax=52 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+20m0s987ms enc=[134 kbit/s real=133 synth=0] state=P
+state=PLAYING
+6 up=1261 memMB=4288 psi_cpu=7.48 io=0.00 mem=0.00 tmax=51 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+21m0s991ms enc=[128 kbit/s real=128 synth=0] state=P
+state=PLAYING
+7 up=1322 memMB=4272 psi_cpu=7.60 io=0.00 mem=0.00 tmax=51 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+22m1s988ms enc=[122 kbit/s real=123 synth=0] state=P
+state=PLAYING
+8 up=1383 memMB=4289 psi_cpu=7.62 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+23m3s1ms enc=[127 kbit/s real=129 synth=0] state=P
+state=PLAYING
+9 up=1443 memMB=4293 psi_cpu=7.48 io=0.00 mem=0.00 tmax=53 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+24m2s993ms enc=[117 kbit/s real=118 synth=0] state=P
+state=PLAYING
+10 up=1504 memMB=4283 psi_cpu=7.27 io=0.00 mem=0.00 tmax=52 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+25m3s999ms enc=[116 kbit/s real=117 synth=0] state=P
+state=PLAYING
+11 up=1565 memMB=4278 psi_cpu=7.38 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+26m3s998ms enc=[119 kbit/s real=120 synth=0] state=P
+state=PLAYING
+12 up=1625 memMB=4262 psi_cpu=7.31 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+27m4s998ms enc=[125 kbit/s real=124 synth=0] state=P
+state=PLAYING
+13 up=1686 memMB=4289 psi_cpu=7.40 io=0.00 mem=0.00 tmax=51 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+28m6s4ms enc=[119 kbit/s real=120 synth=0] state=P
+state=PLAYING
+14 up=1747 memMB=4296 psi_cpu=7.24 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+29m6s4ms enc=[118 kbit/s real=119 synth=0] state=P
+state=PLAYING
+15 up=1807 memMB=4301 psi_cpu=7.32 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+30m7s10ms enc=[115 kbit/s real=117 synth=0] state=P
+state=PLAYING
+16 up=1868 memMB=4274 psi_cpu=7.45 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+31m8s0ms enc=[118 kbit/s real=119 synth=0] state=P
+state=PLAYING
+17 up=1928 memMB=4293 psi_cpu=7.47 io=0.00 mem=0.00 tmax=51 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+32m8s6ms enc=[120 kbit/s real=121 synth=0] state=P
+state=PLAYING
+18 up=1989 memMB=4291 psi_cpu=7.43 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+33m9s8ms enc=[116 kbit/s real=117 synth=0] state=P
+state=PLAYING
+19 up=2050 memMB=4273 psi_cpu=7.35 io=0.00 mem=0.00 tmax=49 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+34m10s7ms enc=[121 kbit/s real=120 synth=0] state=P
+state=PLAYING
+20 up=2110 memMB=4282 psi_cpu=7.55 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+35m10s19ms enc=[118 kbit/s real=120 synth=0] state=P
+state=PLAYING
+21 up=2171 memMB=4281 psi_cpu=7.61 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+36m11s9ms enc=[130 kbit/s real=132 synth=0] state=P
+state=PLAYING
+22 up=2232 memMB=4294 psi_cpu=7.54 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+37m12s12ms enc=[124 kbit/s real=126 synth=0] state=P
+state=PLAYING
+23 up=2292 memMB=4284 psi_cpu=7.60 io=0.00 mem=0.00 tmax=52 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+38m12s26ms enc=[188 kbit/s real=129 synth=0] state=P
+state=PLAYING
+24 up=2353 memMB=4287 psi_cpu=7.73 io=0.00 mem=0.00 tmax=51 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+39m13s20ms enc=[131 kbit/s real=133 synth=0] state=P
+state=PLAYING
+25 up=2414 memMB=4276 psi_cpu=7.55 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+40m14s17ms enc=[133 kbit/s real=134 synth=0] state=P
+state=PLAYING
+26 up=2475 memMB=4297 psi_cpu=7.60 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+41m14s28ms enc=[132 kbit/s real=134 synth=0] state=P
+state=PLAYING
+27 up=2535 memMB=4266 psi_cpu=7.65 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+42m15s32ms enc=[150 kbit/s real=148 synth=0] state=P
+state=PLAYING
+28 up=2596 memMB=4288 psi_cpu=7.64 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+43m16s31ms enc=[130 kbit/s real=132 synth=0] state=P
+state=PLAYING
+29 up=2657 memMB=4279 psi_cpu=7.64 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+44m16s24ms enc=[125 kbit/s real=127 synth=0] state=P
+state=PLAYING
+30 up=2717 memMB=4284 psi_cpu=7.62 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+45m17s25ms enc=[131 kbit/s real=133 synth=0] state=P
+state=PLAYING
+31 up=2778 memMB=4313 psi_cpu=7.76 io=0.00 mem=0.00 tmax=49 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+46m17s29ms enc=[127 kbit/s real=129 synth=0] state=P
+state=PLAYING
+32 up=2838 memMB=4310 psi_cpu=7.54 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+47m18s29ms enc=[128 kbit/s real=131 synth=0] state=P
+state=PLAYING
+33 up=2899 memMB=4306 psi_cpu=7.38 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+48m19s29ms enc=[131 kbit/s real=132 synth=0] state=P
+state=PLAYING
+34 up=2960 memMB=4311 psi_cpu=7.65 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+49m19s39ms enc=[133 kbit/s real=133 synth=0] state=P
+state=PLAYING
+35 up=3020 memMB=4302 psi_cpu=7.73 io=0.00 mem=0.00 tmax=49 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+50m20s37ms enc=[130 kbit/s real=131 synth=0] state=P
+state=PLAYING
+36 up=3081 memMB=4303 psi_cpu=7.85 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+51m21s44ms enc=[131 kbit/s real=131 synth=0] state=P
+state=PLAYING
+37 up=3142 memMB=4297 psi_cpu=7.77 io=0.00 mem=0.00 tmax=54 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+52m21s37ms enc=[127 kbit/s real=129 synth=0] state=P
+state=PLAYING
+38 up=3202 memMB=4307 psi_cpu=7.64 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+53m22s37ms enc=[130 kbit/s real=133 synth=0] state=P
+state=PLAYING
+39 up=3263 memMB=4381 psi_cpu=7.66 io=0.00 mem=0.00 tmax=52 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+54m23s40ms enc=[129 kbit/s real=130 synth=0] state=P
+state=PLAYING
+40 up=3324 memMB=4379 psi_cpu=7.65 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+55m23s49ms enc=[124 kbit/s real=126 synth=0] state=P
+state=PLAYING
+41 up=3384 memMB=4387 psi_cpu=7.62 io=0.00 mem=0.00 tmax=49 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+56m24s51ms enc=[119 kbit/s real=120 synth=0] state=P
+state=PLAYING
+42 up=3445 memMB=4391 psi_cpu=7.49 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+57m25s42ms enc=[176 kbit/s real=117 synth=0] state=P
+state=PLAYING
+43 up=3506 memMB=4395 psi_cpu=7.42 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+58m26s50ms enc=[117 kbit/s real=119 synth=0] state=P
+state=PLAYING
+44 up=3566 memMB=4393 psi_cpu=7.43 io=0.00 mem=0.00 tmax=49 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+59m26s58ms enc=[119 kbit/s real=121 synth=0] state=P
+state=PLAYING
+45 up=3627 memMB=4389 psi_cpu=7.42 io=0.00 mem=0.00 tmax=50 crashes=1 anr=0 lylink=1527 lyscr=1526 gps_et=+1h0m27s57ms enc=[132 kbit/s real=133 synth=0] state=P
+state=PLAYING
+end 2026-11-06 09:39:38

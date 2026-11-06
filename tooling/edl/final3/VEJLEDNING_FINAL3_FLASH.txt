@@ -1,0 +1,136 @@
+============================================================
+OTTO — FLASH FINAL3 (ANDROID 17) FRA WINDOWS-PC
+Dato: 01.11.2026
+============================================================
+
+HVAD ER NYT I FINAL3 (i forhold til FINAL2 fra 25.10)
+  + Recorder R8: H.264 High profile, QP 25-40, 25 ms
+    syntetisk frist, flere scrcpy-forsøg ved opstart
+  + lylinkservice og lyscrservice uden reboot() (F10/F10b)
+  + Bil-GPS: frisk ved ankomst + ur fra bilens GPS (F6/F7)
+  + Hurtigere boot: run.sh parallelt, VDS bekræftet ved
+    ca. 40 s, GPU/SF-placering straks (F3/F4/F14)
+  + vendor.atfwd stoppes med det samme (F13, ny .rc)
+  + otto_firstboot: app-slankning (F23), Wi-Fi-tjek,
+    12 Mbit/s som standard
+  + Launcher v18 og OTTO Spotify 1.2: boot-logo der toner
+    over i klar Home (1,4 s), Tilbage/Hjem i andre apps, fast dock
+    i Spotify, Home-søgning med tastatur, albumcover via internet
+  + GPS-broen med satellitter: retter "Searching for GPS"
+    i Maps-navigation (bevist på turen hjem fra Skjern)
+  - IKKE med: F11 (ly_link-supervisor), efter din beslutning.
+  Alt andet er byte-ens med FINAL2. Se CHANGED_FILES.txt
+  (11 forskelle, kun i system_b).
+
+HVAD DER SKER
+  Kun super-partitionen (Android-systemet) bliver skrevet,
+  præcis som 25.10. Firmware, partitionstabel og slot røres
+  ikke - OTTO bliver på slot _b.
+  Dine apps, indstillinger, logins, Wi-Fi og Spotify BLIVER.
+
+MAPPEN OTTO_A17_FINAL3 INDEHOLDER
+  otto_r119_win_final3.py         programmet der flasher FINAL3
+  OTTO_A17_FINAL3_super.simg      FINAL3-systemet (ca. 5,5 GB)
+  SHA256SUMS.txt                  kontroltal
+  CHANGED_FILES.txt               alt der er ændret i forhold til FINAL2
+  BUILD_LOG.txt                   byggelog
+  postboot_verify_device.sh       Claudes efter-tjek (køres på OTTO)
+  post_flash_cleanup_final3.sh    Claudes oprydning (køres på OTTO)
+  VEJLEDNING_FINAL3_FLASH.txt     denne fil
+  goco7.bin ligger i C:\otto fra sidst.
+
+Gør ét trin ad gangen. Står der noget andet end det forventede,
+så stop og send skærmen til Claude.
+
+
+TRIN 1 — KOPIÉR MAPPEN TIL PC'EN
+------------------------------------------------------------
+1. Tag USB-kablet ud af telefonen og sæt det i igen (så Windows
+   ser de nyeste filer).
+2. Vælg "Filoverførsel" på telefonen.
+3. Stifinder: telefonen > Intern lagerplads > Download > qfil > otto
+4. Træk mappen "OTTO_A17_FINAL3" over i C:\otto
+   Så har du C:\otto\OTTO_A17_FINAL3
+   (Den store fil tager 5-15 minutter.)
+
+
+TRIN 2 — TJEK PROGRAMFILEN
+------------------------------------------------------------
+1. Start > skriv "cmd" > åbn "Kommandoprompt".
+2. Skriv:
+       cd C:\otto\OTTO_A17_FINAL3
+       certutil -hashfile otto_r119_win_final3.py SHA256
+   -> skal give:
+       b7aee1275cf6757b86802706a429b5bf79145ba90243e186a581d05257f7e267
+   Passer det ikke: kopiér filen igen (trin 1).
+
+
+TRIN 3 — TJEK IMAGE-FILEN (skriver intet, OTTO behøver ikke være tilsluttet)
+------------------------------------------------------------
+       py otto_r119_win_final3.py selftest
+   Tager et par minutter.
+   -> skal slutte med:
+       EXPANDED_SHA256=5cac116531d47d02a36348738f2748f9021a2511d2e8ac1451b18157a804c576
+       SELFTEST=PASS
+   FAIL = den store fil er ikke kopieret helt. Kopiér igen.
+
+
+TRIN 4 — OTTO I EDL OG TJEK FORBINDELSEN (skriver intet)
+------------------------------------------------------------
+1. Tag strømmen fra OTTO.
+2. Hold EDL-knappen inde, sæt kablet i pc'en, slip knappen.
+3. Skriv:
+       py otto_r119_win_final3.py preflight
+   -> skal vise:  FIREHOSE=OK GPT_SUPER=OK
+   -> og slutte med:  PREFLIGHT=OK (no writes)
+
+
+TRIN 5 — FLASH
+------------------------------------------------------------
+       py otto_r119_win_final3.py flash
+   Skriv FLASH og tryk Enter.
+
+Du ser linjer som:
+   PROGRESS 512/6144 (8.3%) written=... same=... eta=.. min
+Kun de dele af super, der er ændret, skrives ("same" springes over).
+Til sidst læser programmet HELE super igen:
+   VERIFY 1024/6144 ... VERIFY 6144/6144
+Tager ca. 30-45 minutter i alt.
+
+
+HVIS FORBINDELSEN RYGER
+------------------------------------------------------------
+- Luk IKKE programmet. Sæt OTTO i EDL igen med knappen -
+  programmet fortsætter selv.
+- Er programmet lukket: kør "py otto_r119_win_final3.py flash"
+  igen - det husker hvor langt det nåede
+  (R119_LEDGER_a17_final3.txt).
+
+
+FÆRDIG
+------------------------------------------------------------
+Når der står:
+   RESULT=FLASH_PASS  A17 super written and fully SHA-verified
+1. Tag kablet ud af pc'en.
+2. Sæt OTTO i bilen / giv strøm normalt (ikke EDL-knappen).
+3. Du skal se OttoBuzz-logoet, der toner over i Home.
+4. Sig til Claude: "OTTO er online".
+   Claude kører så: oprydning af test-filer -> genstart ->
+   efter-tjek (65 punkter) -> den sidste benchmark med kamera.
+
+
+GØR IKKE
+------------------------------------------------------------
+- Kør IKKE "wipe-userdata".
+- Brug IKKE programmet fra OTTO_A17_FINAL2 til dette image -
+  det kender kun FINAL2 og vil afvise det.
+
+
+HVIS NOGET GÅR GALT - TILBAGE TIL FINAL2 (25.10)
+------------------------------------------------------------
+       cd C:\otto\OTTO_A17_FINAL2
+       del R119_LEDGER_a17_final2.txt
+       py otto_r119_win_final2.py flash
+(Ledger-filen skal slettes, ellers tror programmet at det
+allerede er færdigt.) Sig til Claude først.
+============================================================

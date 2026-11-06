@@ -1,0 +1,6 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="dk.otto.overlay.dockleft">
+    <!-- OTTO fixed dock (owner 2026-11-01): a permanent left strip reserved for the vertical OTTO dock in every app.
+         Enabled while the dock position is LEFT; dk.otto.overlay.safezone (priority 2) adds the right Home zone on top. -->
+    <overlay android:targetPackage="android" android:category="com.android.internal.display_cutout_emulation" android:priority="1" />
+    <application android:hasCode="false" />
+</manifest>

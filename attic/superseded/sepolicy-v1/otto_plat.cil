@@ -1,0 +1,10 @@
+; OTTO plat additions (system_b/etc/selinux/plat_sepolicy.cil, appended). Proven live 2026-10-23.
+; Factory menu (com.ly.factory, seinfo otto -> system_app) wired/wireless ADB: it writes
+; persist.ctz.adb.config, which ly_link.sh reads at boot. Own type instead of all of default_prop.
+(type otto_adb_prop)
+(roletype object_r otto_adb_prop)
+(typeattributeset property_type (otto_adb_prop))
+(typeattributeset system_property_type (otto_adb_prop))
+(allow system_app otto_adb_prop (property_service (set)))
+(allow system_app otto_adb_prop (file (read open getattr map)))
+(allow coredomain otto_adb_prop (file (read open getattr map)))

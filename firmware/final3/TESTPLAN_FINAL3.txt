@@ -1,0 +1,58 @@
+OTTO A17 FINAL3 — AFSLUTTENDE FUNKTIONSTEST OG BENCHMARK (plan, 2026-11-01)
+Godkendt af ejeren: "gem den afsluttende test plan". Køres når FINAL3 er flashet og OTTO er online.
+Princip: alt måles på boksen som leveret. Ingen testrecordere eller test-hooks sættes på igen.
+
+A. INTEGRITET (Claude, ca. 10 min)
+   post_flash_cleanup_final3.sh -> sync -> genstart -> postboot_verify_device.sh (V01-V65).
+   Bestået: 65/65 PASS (filer i /system, ingen hooks, R8 aktiv, 12 Mbit/s, atfwd stoppet, F23, splash, SELinux).
+
+B. OPSTART (Claude; ejeren laver én kold start: træk stikket)
+   3 genstarter + 1 kold start. Log + 1 skærmbillede/s (engangs service.d-script der sletter sig selv).
+   Måles: logo, VDS bekræftet, første billede til bilen, klar Home, autoplay.
+   Bestået: logoet uafbrudt til klar Home uden Android-skærme; VDS < 45 s; Home < ca. 50 s; musikken starter selv.
+
+C. PROJEKTIONSKÆDEN (Claude, bilen parkeret med CarPlay)
+   Faser: stille Home, scriptet Maps-panorering, 60 fps-video (Just Player), app-skift (Podimo/Maps/Home),
+   søgning med tastatur.
+   Måles pr. fase: display-Hz (SurfaceFlinger frametimeline), encoderens rigtige og syntetiske billeder/s
+   (R8 stats i recorder.log), leveret bitrate, CPU/IO-pres (PSI), temperatur.
+   Bestået: display ca. 60 Hz; 57-60 rigtige billeder/s ved bevægelse; ingen pauser > 100 ms ved app-skift.
+
+D. KAMERA, DE ÆGTE BILLEDER/S (ejeren filmer 10 min, Claude analyserer)
+   Ejeren filmer MIB4-skærmen i slowmotion; Claude afspiller en testvideo med billednumre og kører panorering.
+   Claude tæller forskellige billeder/s på bilens skærm og ser efter udtværing og hak.
+   Det endelige bevis for hele kæden ud til bilens skærm.
+
+E. FUNKTIONSTEST (Claude, ca. 20 min)
+   Som 2026-11-01: dock (Tilbage/Hjem/Medier/Apps, swipe-dock), Medier og Apps (alle apps åbner), widget
+   (vejr fold-ud, Tilbage lukker, play/pause, swipe mellem afspillere, aktiv afspiller forrest), Home-søgning
+   med tastatur, OTTO Spotify med fast dock, Indstillinger (alle faner, AdAway-række, ingen MapsMod/NAVI),
+   Google Kalender, rattets frem/tilbage (medietaster).
+   Ejeren: stemmeknappen på rattet (lytter den, eller kun Gemini-tekstlinje?) og de rigtige knapper i bilen.
+
+F. UDHOLDENHED (Claude, 45 min parkeret)
+   Maps på Home + musik. Hvert minut: hukommelse, CPU/IO-pres, temperatur, nedbrud/ANR, genstart af
+   CarPlay-stakken, GPS fra bilen.
+   Bestået: 0 nedbrud; ingen stak-genstart; stabil hukommelse; GPS-fix fra bilen hele vejen.
+
+G. KØRETUR (ejeren)
+   Normal tur: navigation på instrumentbrættet, CarPlay-lyd, GPS, "irriterer den?".
+   Claude læser bagefter boksens health.log.
+
+DOKUMENTATION
+   Én samlet rapport med tal, skærmbilleder og kamerabilleder, sammenlignet med A13
+   (otto-a17/docs/BENCHMARK_A13_vs_A17.txt) og FINAL2/R3 (OTTOBUZZ_MIB4_UNATTENDED_FPS_20261031/06_ANALYSIS.md).
+   TXT i Download/OTTO + samme rapport i otto-platform/docs; som delbar side hvis ejeren ønsker det.
+   Ejerens tid i alt: én kold start, ca. 10 min filmning og køreturen.
+
+FØR START: FINAL3 flashet (VEJLEDNING_FINAL3_FLASH.txt), ejeren siger "OTTO er online".
+Arbejdskopier: ~/otto_final_build/final3 (9,2 GB) beholdes til flashen er verificeret.
+   B-tillæg (ejer 2026-11-01): ejeren så boot-logoet blinke i højre side. Opstarten optages med screenrecord (fuld fps) gennem skiftet, så blinket kan findes billede for billede.
+   A-tillæg (2026-11-01): efter oprydningen installeres launcher v16 igen med adb install -r
+   (Download/OTTO_FEMTO_V16_41307306562, 2fd6c619; hurtig Tilbage/Hjem i andre apps). Imaget har v15, og med samme
+   versionCode kan Android fjerne /data-opdateringen ved første opstart efter flash. V59 godtager v15 eller v16.
+   GPS-test (kørsel): satellit-broen (gps_sat, --sat-extra=12) lever kun til næste opstart. Hvis den viser sig at
+   løse "Searching for GPS", besluttes leveringen separat (broen ligger i /system).
+   REBUILD (2026-11-01, ejer: "overskriv den sidste"): FINAL3 indeholder nu launcher v18 og GPS-broen med satellitter
+   (84d5e592). A-tillægget om at geninstallere v16 udgår. V53/V59 forventer de nye filer. R9 (intra-refresh) er IKKE med;
+   den testes separat og tilføjes kun, hvis den er bevist bedre.

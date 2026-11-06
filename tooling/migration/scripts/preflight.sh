@@ -1,0 +1,75 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# OTTO A17 permanent migration — PREFLIGHT (read-only). Run in Termux on the phone, OTTO running the
+# current A17 (DSU) and reachable on Wi-Fi ADB. Changes NOTHING on OTTO. Any mismatch => FAIL, exit 1.
+# On full PASS writes 06_CHECKSUMS/PREFLIGHT_PASS.env (valid 6 h, bound to the package manifest hash).
+set -Euo pipefail
+PKG=$(cd "$(dirname "$0")/.." && pwd); S=<OTTO_IP>:29527; ADB=adb
+TS=$(date +%Y%m%d_%H%M%S); OUT=$PKG/05_LOGS/preflight_$TS; mkdir -p $OUT; LOG=$OUT/preflight.log
+exec > >(tee -a $LOG) 2>&1
+n=0; bad=0
+ok(){ n=$((n+1)); echo "PASS  P$n  $*"; }
+no(){ n=$((n+1)); bad=$((bad+1)); echo "FAIL  P$n  $*"; }
+t(){ local d=$1; shift; if "$@" >/dev/null 2>&1; then ok "$d"; else no "$d"; fi; }
+sh_(){ $ADB -s $S shell "$@" 2>/dev/null | tr -d '\r'; }
+su_(){ $ADB -s $S shell su -c "\"$*\"" 2>/dev/null | tr -d '\r'; }
+B=$PKG/01_BACKUPS; IMG=$PKG/02_IMAGES
+echo "== OTTO A17 PERMANENT — PREFLIGHT $TS"
+
+# 1 tools on the phone
+for c in adb termux-fastboot termux-usb sha256sum gzip lpdump; do t "tool $c" command -v $c; done
+# 2 package integrity
+( cd $PKG && sha256sum -c 06_CHECKSUMS/MANIFEST.sha256 > $OUT/manifest_check.txt 2>&1 ) && ok "MANIFEST.sha256 all files OK" || no "MANIFEST.sha256 mismatch (see $OUT/manifest_check.txt)"
+MANIFEST_SHA=$(sha256sum $PKG/06_CHECKSUMS/MANIFEST.sha256 | cut -d' ' -f1)
+# 3 device identity and boot state
+$ADB connect $S >/dev/null 2>&1
+[ "$(sh_ getprop sys.boot_completed)" = 1 ] && ok "OTTO reachable, booted" || { no "OTTO not reachable on $S"; }
+[ "$(sh_ getprop ro.boot.serialno)" = "${OTTO_SERIAL:?set OTTO_SERIAL to your device serial}" ] && ok "serial $OTTO_SERIAL" || no "serial mismatch"
+[ "$(sh_ cat /sys/devices/soc0/soc_id)" = 518 ] && ok "SOC_ID 518 (khaje)" || no "SOC_ID mismatch"
+[ "$(sh_ getprop ro.boot.slot_suffix)" = _b ] && ok "active slot _b" || no "slot not _b"
+[ "$(sh_ getprop ro.boot.vbmeta.device_state)" = unlocked ] && ok "bootloader unlocked" || no "not unlocked"
+[ "$(sh_ getprop ro.boot.flash.locked)" = 0 ] && ok "flash.locked=0" || no "flash.locked!=0"
+[ "$(sh_ getprop ro.boot.verifiedbootstate)" = orange ] && ok "verifiedbootstate orange" || no "not orange"
+[ "$(sh_ getprop ro.boot.veritymode)" = disabled ] && ok "veritymode disabled (vbmeta_b flags=1)" || no "verity not disabled"
+sh_ getprop ro.build.fingerprint | grep -q "gsi_gms_arm64/gsi_arm64:17/CP2A.260605.012/15430684" && ok "running OTTO A17 (FINAL-R1 base)" || no "unexpected fingerprint"
+su_ gsi_tool status | grep -q running && ok "A17 runs as DSU (pre-migration state)" || no "DSU not running"
+[ "$(su_ id -u)" = 0 ] && ok "root via su" || no "no root"
+# 4 GPT and geometry unchanged since evidence
+[ "$(su_ 'dd if=/dev/block/mmcblk0 bs=512 skip=1 count=1 2>/dev/null | sha256sum' | cut -d' ' -f1)" = 712ca75b50cb24cec9e9a7beaf3a2bdeb1871d3a0a7276fad5243456edf1d181 ] && ok "GPT LBA1 sha 712ca75b" || no "GPT header changed"
+for p in super userdata metadata boot_b init_boot_b vendor_boot_b dtbo_b vbmeta_b vbmeta_system_b recovery_b; do
+  exp=$(grep "^$p " $PKG/00_EVIDENCE/live/34_gpt_geometry.txt | awk '{print $3" "$4}')
+  d=$(su_ "basename \$(readlink -f /dev/block/by-name/$p)"); live=$(su_ "cat /sys/class/block/$d/start /sys/class/block/$d/size" | tr '\n' ' ' | sed 's/ $//')
+  [ -n "$exp" ] && [ "$exp" = "$live" ] && ok "geometry $p $live" || no "geometry $p expected '$exp' live '$live'"
+done
+# 5 A13 super backup == live super (backup is current and complete)
+BSHA=$(grep -oE '^[0-9a-f]{64}' $PKG/06_CHECKSUMS/a13_super_raw.sha256 2>/dev/null | head -1)
+LSHA=$(su_ sha256sum /dev/block/by-name/super | cut -d' ' -f1)
+[ -n "$BSHA" ] && [ "$BSHA" = "$LSHA" ] && ok "live super == A13 backup ($BSHA)" || no "live super ($LSHA) != backup ($BSHA)"
+# 6 boot chain unchanged vs backups (migration does not touch these; recovery relies on them)
+for p in boot_b init_boot_b vendor_boot_b dtbo_b vbmeta_b vbmeta_system_b recovery_b recovery_a misc; do
+  l=$(su_ sha256sum /dev/block/by-name/$p | cut -d' ' -f1); b=$(sha256sum < $B/boot_chain/$p.img 2>/dev/null | cut -d' ' -f1)
+  [ "$l" = "$b" ] && ok "boot chain $p == backup" || no "boot chain $p live!=backup"
+done
+# 7 vendor-side partitions inside the A17 super image == live (byte-identical carry-over)
+for p in vendor_b vendor_dlkm_b system_dlkm_b odm_b; do
+  l=$(su_ sha256sum /dev/block/mapper/$p | cut -d' ' -f1); e=$(awk -v p=$p '$2==p{print $1}' $PKG/06_CHECKSUMS/a17_super_parts.sha256 2>/dev/null)
+  [ -n "$e" ] && [ "$l" = "$e" ] && ok "live $p == part in A17 super image" || no "live $p != A17 super part"
+done
+# 8 A17 super image validity
+SIMG=$IMG/OTTO_A17_super.simg
+[ -f $SIMG ] && [ "$(sha256sum $SIMG | cut -d' ' -f1)" = "$(cut -d' ' -f1 $SIMG.sha256)" ] && ok "A17 super image sha" || no "A17 super image missing/sha"
+[ "$(sha256sum "$IMG/OTTO_A17_super.simg.lpdump.txt" | cut -d' ' -f1)" = "$(awk '$2=="./02_IMAGES/OTTO_A17_super.simg.lpdump.txt" {print $1}' "$PKG/06_CHECKSUMS/MANIFEST.sha256")" ] && grep -q "^  Name: system_b$" "$IMG/OTTO_A17_super.simg.lpdump.txt" && ok "A17 super LP metadata report authenticated" || no "A17 super LP metadata report"
+# 9 first-boot prerequisites on OTTO
+su_ test -s /metadata/otto/provision/wifi.conf && ok "wifi.conf provisioned in /metadata/otto/provision" || no "wifi.conf missing"
+[ -f $B/a17_userdata_state/SHA256SUMS ] && ( cd $B/a17_userdata_state && grep -v ' ./capture.log$' SHA256SUMS | sha256sum -c - >/dev/null 2>&1 ) && ok "A17 state bundle intact" || no "A17 state bundle"
+# 10 recovery gate and phone space
+[ -f $PKG/07_RECOVERY/RECOVERY_GATE_PASS.env ] && grep -q RECOVERY_GATE=PASS $PKG/07_RECOVERY/RECOVERY_GATE_PASS.env && ok "RECOVERY_GATE_PASS present" || no "recovery gate not passed (run 07_RECOVERY/recovery_gate.sh)"
+free=$(df -k "$HOME" | awk 'NR==2 {print $4}')
+[ "$free" -gt 8000000 ] && ok "phone free space ${free}k (>=8 GB for emergency conversion)" || no "phone free space ${free}k < 8 GB"
+
+echo "RESULT checks=$n fail=$bad"
+if [ $bad -eq 0 ]; then
+  printf 'PREFLIGHT=PASS\nDATE_EPOCH=%s\nMANIFEST_SHA=%s\nSUPER_SHA=%s\nLOG=%s\n' "$(date +%s)" "$MANIFEST_SHA" "$LSHA" "$LOG" > $PKG/06_CHECKSUMS/PREFLIGHT_PASS.env
+  echo "PREFLIGHT PASS — stamp 06_CHECKSUMS/PREFLIGHT_PASS.env (valid 6 h)"; exit 0
+else
+  rm -f $PKG/06_CHECKSUMS/PREFLIGHT_PASS.env; echo "PREFLIGHT FAIL — nothing was changed"; exit 1
+fi

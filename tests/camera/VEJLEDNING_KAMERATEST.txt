@@ -1,0 +1,21 @@
+OTTO KAMERATEST (benchmark D) - ca. 5 minutter. Bilen skal HOLDE STILLE (testvideoen vises på bilens skærm).
+
+FORBEREDELSE
+1. Bilen tændt, CarPlay med OTTO på skærmen. OTTO og telefonen på bilens Wi-Fi.
+2. Telefonens kamera: SLOWMOTION (240 fps, eller 120 fps). Ikke almindelig video.
+3. Hold telefonen stille (mod rattet eller på et stativ), lige foran MIB4-skærmen,
+   så HELE skærmen fylder billedet. Undgå genskin fra vinduer.
+
+SELVE TESTEN
+4. Sig "klar" til Claude.
+5. Når Claude skriver "START OPTAGELSEN NU": start slowmotion-optagelsen.
+6. Sekvensen kører af sig selv i ca. 2,5 minut:
+     5 s Home -> 60 s testvideo (farvebjælker med tæller og gul blok)
+     -> 30 s Maps panoreres frem og tilbage -> 5 skift Podimo/Home.
+7. Når Claude skriver "STOP OPTAGELSEN": stop optagelsen.
+
+BAGEFTER
+8. Videoen ligger i DCIM/Camera. Sig "videoen er gemt".
+   Claude måler: hvor mange forskellige billeder pr. sekund MIB4 faktisk viste (60 = alle),
+   og ser panorering og app-skift igennem billede for billede for udtværing,
+   holdt op mod OTTO's egen log fra samme tidspunkt.

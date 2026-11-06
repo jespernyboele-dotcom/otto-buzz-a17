@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- OTTO safe zone: the right 576 px (30 %) is reserved for the OTTO panel. Apps lay out their
+         controls outside it; Google Maps still draws the map edge to edge underneath. -->
+    <string name="config_mainBuiltInDisplayCutout" translatable="false">@bind_right_cutout M 0,1 L -576,1 L -576,839 L 0,839 Z @right</string>
+    <string name="config_mainBuiltInDisplayCutoutRectApproximation" translatable="false">@bind_right_cutout M 0,1 L -576,1 L -576,839 L 0,839 Z @right</string>
+    <bool name="config_fillMainBuiltInDisplayCutout">false</bool>
+    <bool name="config_maskMainBuiltInDisplayCutout">false</bool>
+</resources>

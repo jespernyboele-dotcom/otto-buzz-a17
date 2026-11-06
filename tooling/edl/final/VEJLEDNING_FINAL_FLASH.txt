@@ -1,0 +1,149 @@
+============================================================
+OTTO — FLASH DET ENDELIGE ANDROID 17 FRA WINDOWS-PC
+Dato: 24.10.2026
+============================================================
+
+HVAD DER SKER
+  Kun super-partitionen (Android-systemet) bliver skrevet.
+  Dine apps, indstillinger, logins, Wi-Fi og Spotify BLIVER.
+  Bilen er uden betydning - OTTO skal bare have strøm.
+
+MAPPEN OTTO_A17_FINAL INDEHOLDER
+  otto_r119_win_final.py      programmet der flasher (det endelige image)
+  OTTO_A17_FINAL_super.simg   det endelige Android 17 (5,46 GB)
+  SHA256SUMS.txt              kontroltal
+  CHANGED_FILES.txt           liste over alt der er ændret
+  VEJLEDNING_FINAL_FLASH.txt  denne fil
+  goco7.bin ligger i mappen ovenover (C:\otto) fra sidst.
+
+Gør ét trin ad gangen. Står der noget andet end det forventede,
+så stop og send skærmen til Claude.
+
+
+TRIN 1 — FØR DU GÅR TIL PC'EN (Claude gør det)
+------------------------------------------------------------
+1. Tænd OTTO og sæt den på Wi-Fi (strøm via passthrough-kablet).
+2. Sig til Claude: "OTTO er online".
+3. Claude kører pre_flash_retire.sh på OTTO over Wi-Fi.
+   Den flytter de gamle Magisk-moduler til side (de er nu bygget
+   ind i det nye system). Intet slettes.
+4. Vent til Claude siger "klar til flash".
+   OTTO kører normalt videre indtil du sætter den i EDL.
+
+
+TRIN 2 — KOPIÉR MAPPEN TIL PC'EN
+------------------------------------------------------------
+1. Sæt telefonen i pc'en med USB-kablet.
+2. Tryk på USB-beskeden på telefonen og vælg "Filoverførsel".
+3. Åbn Stifinder på pc'en. Klik på telefonen i venstre side.
+4. Gå ind i: Intern lagerplads > Download > qfil > otto
+5. Træk mappen "OTTO_A17_FINAL" over i C:\otto
+   Så har du C:\otto\OTTO_A17_FINAL med alle filerne.
+   (Den store fil tager 5-15 minutter.)
+6. Tjek at C:\otto\goco7.bin findes (fra sidste gang).
+
+
+TRIN 3 — PYTHON OG DRIVER
+------------------------------------------------------------
+Er installeret fra sidste gang - spring over.
+Kun hvis det er en ny pc: følg TRIN 2 og 3 i C:\otto\VEJLEDNING.txt
+(Python med "Add python.exe to PATH", pakkerne fra installer\wheels,
+og Zadig: QUSB__BULK -> WinUSB).
+
+
+TRIN 4 — TJEK FILEN (skriver intet, OTTO behøver ikke være tilsluttet)
+------------------------------------------------------------
+1. Tryk på Start, skriv "cmd", åbn "Kommandoprompt".
+2. Skriv (tryk Enter efter hver linje):
+       cd C:\otto\OTTO_A17_FINAL
+       py otto_r119_win_final.py selftest
+   Tager et par minutter.
+   -> skal slutte med:
+       EXPANDED_SHA256=e0360bd2067c82e60af3faefcf44e02434ce640b2ac8fc03bf7db812e76c944b
+       SELFTEST=PASS
+
+
+TRIN 5 — OTTO I EDL OG TJEK FORBINDELSEN (skriver intet)
+------------------------------------------------------------
+1. Sluk OTTO (tag strømmen).
+2. Hold EDL-knappen inde, sæt kablet i pc'en, slip knappen.
+   (Samme måde og samme kabel som sidst.)
+3. Skriv:
+       py otto_r119_win_final.py preflight
+   -> skal vise:  FIREHOSE=OK GPT_SUPER=OK
+   -> og slutte med:  PREFLIGHT=OK (no writes)
+
+
+TRIN 6 — FLASH
+------------------------------------------------------------
+       py otto_r119_win_final.py flash
+   Skriv FLASH og tryk Enter for at starte.
+
+Du ser linjer som:
+   PROGRESS 512/6144 (8.3%) written=... same=... eta=.. min
+   written = MiB der er skrevet, same = MiB der allerede var ens
+   (springes over). Hver skrevet MiB læses straks tilbage og tjekkes.
+
+Til sidst læser programmet HELE super igen og tjekker kontroltallet:
+   VERIFY 1024/6144 ... VERIFY 6144/6144
+
+Tager ca. 30-45 minutter i alt.
+
+
+HVIS FORBINDELSEN RYGER
+------------------------------------------------------------
+- Luk IKKE programmet.
+- Sæt bare OTTO i EDL igen med knappen.
+- Programmet finder OTTO selv og fortsætter hvor det slap.
+- Er programmet lukket: kør "py otto_r119_win_final.py flash" igen -
+  det husker selv hvor langt det nåede (R119_LEDGER_a17.txt).
+
+
+FÆRDIG
+------------------------------------------------------------
+Når der står:
+   RESULT=FLASH_PASS  A17 super written and fully SHA-verified
+er det endelige Android 17 skrevet og kontrolleret.
+
+1. Tag kablet ud af pc'en.
+2. Giv OTTO strøm normalt (ikke EDL-knappen).
+3. Første opstart tager lidt længere (Android tilpasser apps).
+   Du skal kunne se OTTO-boot-logoet.
+4. Send filen C:\otto\OTTO_A17_FINAL\R119_WIN_LOG.txt til Claude,
+   og sig til når OTTO er på Wi-Fi.
+   Claude kører derefter efter-tjekket (48 punkter) og målingen.
+
+
+GØR IKKE
+------------------------------------------------------------
+- Kør IKKE "wipe-userdata". Den sletter alle dine apps og data,
+  og det skal ikke ske denne gang.
+- Brug IKKE det gamle program (otto_r119_win.py) til det nye
+  image - det kender kun det gamle image og vil afvise det.
+
+
+EFTER FØRSTE OPSTART - DET ER NORMALT AT:
+------------------------------------------------------------
+- Android er på dansk og i mørkt tema.
+- Der ikke er nogen statuslinje øverst.
+- Android Auto én gang spørger om samtykke
+  ("Welcome to Android Auto ... Continue") - tryk Continue.
+
+
+HVIS NOGET GÅR GALT - TILBAGE TIL I DAG
+------------------------------------------------------------
+Det gamle image og program ligger urørt i C:\otto:
+       cd C:\otto
+       py otto_r119_win.py preflight
+       py otto_r119_win.py flash
+Det skriver præcis det system der kører i dag (e840f520...).
+Claude flytter bagefter de gamle Magisk-moduler tilbage.
+
+
+KONTROLTAL
+------------------------------------------------------------
+OTTO_A17_FINAL_super.simg
+  b8990a388553f7cf18427c54494c82bf900b14b01c5924920818295c10497575
+Indholdet (det der står på OTTO efter flash):
+  e0360bd2067c82e60af3faefcf44e02434ce640b2ac8fc03bf7db812e76c944b
+============================================================

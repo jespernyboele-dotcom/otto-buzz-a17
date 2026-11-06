@@ -1,0 +1,86 @@
+Failed to write while dumping service package: Broken pipe
+OTTO A17 FINAL3 — POST-BOOT VERIFY  2026-11-06 08:32:49  boot=d06134b5-a9c1-4ae0-a8e1-c1d242f161fb
+PASS  V01  boot completed
+PASS  V02  Android 17 build
+PASS  V03  NOT a DSU boot (no gsi booted marker)
+PASS  V04  root fs is system_b from super
+PASS  V05  verity disabled, orange (slot _b)
+INFO  fp=google/gsi_gms_arm64/gsi_arm64:17/CP2A.260605.012/15430684:user/release-keys slot=_b uptime=213.02s
+PASS  V06  su works for shell
+PASS  V07  Magisk 30.7 daemon
+PASS  V08  no Magisk modules (all baked into the image)
+INFO  modules=[]
+PASS  V09  Zygisk off and not in zygote
+PASS  V10  no Vector/LSPosed daemon
+INFO  ART compile breezy: Success
+PASS  V11  ART compile org.breezyweather = Success
+PASS  V12  breezy dexopt status not run-from-apk
+PASS  V13  0 dex2oat/artd denials
+PASS  V14  HOME = OTTO launcher
+PASS  V15  OTTO launcher process
+PASS  V16  dock accessibility service on
+PASS  V17  music listener approved
+PASS  V18  overlay: no status bar / no corners (OttoChrome)
+PASS  V19  overlay: no privacy dot (OttoSystemUi)
+PASS  V20  overlay: safe zone installed
+PASS  V20b  Maps picture-in-picture off
+PASS  V21.dk.otto.spotify  package dk.otto.spotify installed
+PASS  V21.org.breezyweather  package org.breezyweather installed
+PASS  V21.com.spotify.music  package com.spotify.music installed
+PASS  V21.com.podimo  package com.podimo installed
+PASS  V21.org.adaway  package org.adaway installed
+PASS  V21.helium314.keyboard  package helium314.keyboard installed
+PASS  V21.com.topjohnwu.magisk  package com.topjohnwu.magisk installed
+PASS  V21.com.google.android.apps.maps  package com.google.android.apps.maps installed
+PASS  V22  no MapsMod / FactoryFix (Vector modules retired)
+PASS  V23  keyboard = HeliBoard
+PASS  V24  NAVI service (otto_rgid) running
+PASS  V25  Android Auto head unit server on 5277 (NAVI)
+INFO  android_auto=versionName=17.9.664044-release
+PASS  V26  automatic system updates off
+PASS  V27  factory menu = OTTO English build (sha 1624bdc6)
+PASS  V28  persist.ctz.adb.config labelled otto_ctz_adb_prop
+PASS  V29  0 denials: composer, USB HAL, factory adb prop
+PASS  V30  Wi-Fi connected (wlan0 has IPv4)
+PASS  V31  both Wi-Fi networks saved
+PASS  V32  wireless ADB listening on 29527
+PASS  V33  Bluetooth on
+PASS  V34  GNSS HAL present
+PASS  V35  ly_link running (OTTO version)
+INFO  switch_state=1 adb.config= protocol=rcp usb=rcp
+PASS  V36  wireless mode: CarPlay chain rcp
+PASS  V37  USB identity 05ac:12a8
+PASS  V38  ly.verify.state=1 (i2c activation)
+PASS  V39  60 Hz libsdmcore in vendor (no overlay mount)
+PASS  V40  HWC VDS enabled
+PASS  V40b  display 2 (mini-HDMI) off
+PASS  V41  boot animation shown (OTTO logo present, not disabled)
+PASS  V42  ad-block hosts baked (>1000 entries)
+PASS  V43  OTTO services up
+PASS  V44  firstboot done
+PASS  V45  no OTA client in image (FINAL2)
+PASS  V46  no update pending or in progress
+PASS  V49  booted from slot _b, _a not active
+PASS  V50  R8 recorder in /system (fa8c668f)
+PASS  V51  lylinkservice without reboot() (9b3b76b5)
+PASS  V52  lyscrservice without reboot() (8c727747)
+PASS  V53  otto_cargps F6/F7 + satellites extras (84d5e592)
+PASS  V54  boot scripts run.sh/24/25 (F4/F14/F3)
+PASS  V55  no OTTO test hooks or bind mounts left
+PASS  V56  R8 active this boot (High profile, QP 25-40)
+PASS  V57  bitrate 12 Mbit/s
+PASS  V58  F13 atfwd stopped, no updatable_crashing
+PASS  V59  launcher APK = v18 (94109474)
+PASS  V60  OTTO Spotify APK = 1.2 (2ac2d47b)
+PASS  V61  boot splash is a HOME candidate
+PASS  V62  F23: Gmail, Contacts, AOSP calendar disabled
+PASS  V63  F3 HWC-VDS confirmed this boot
+PASS  V64  Google Calendar installed
+PASS  V65  no lylink reboot since boot (stack up)
+INFO  recorder: 26.127 otto-r8 qp 25-40 27.335 otto-r7 sps profile_idc=100 
+PASS  V47  no fatal crashes in crash buffer
+PASS  V48  SELinux enforcing
+INFO  denials total=0  boottime_init=2887816717 uptime=221.85
+RESULT pass=74 fail=0
+NEXT: measure.sh on Home (target < 5 % janky frames, Maps + 1 overlay layer)
+MANUAL (car): CarPlay picture + touch, CarPlay audio, SWC next/prev/'Hey Google', GPS fix from car, NAVI on cluster, factory wired/wireless, AA/CP switch, 30-min drive

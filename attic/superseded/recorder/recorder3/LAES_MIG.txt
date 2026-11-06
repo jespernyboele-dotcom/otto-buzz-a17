@@ -1,0 +1,58 @@
+OTTO — RECORDER R3 TEST: HØJERE BITRATE TIL BILEN          25.10.2026
+=======================================================================
+
+HVAD ER DET
+  Samme Recorder 2.0 som i FINAL2 + tre ting:
+   1. Bitraten kan sættes i /data/adb/otto/config/recorder_bitrate
+      (uden filen opfører den sig præcis som før: 4 Mbit/s).
+   2. Bruges både af standby-serveren og af hver session med bilen.
+      (I FINAL2 bruger første session efter opstart ALTID 4 Mbit/s.)
+   3. Hvert 10. sekund under projektion logges den bitrate encoderen
+      faktisk leverede + antal rigtige/syntetiske frames, i
+      /data/adb/otto/logs/recorder.log (lyscrservice' egen log når
+      ikke logcat på A17 — derfor fil).
+
+HVORDAN DEN ER LAGT PÅ (intet flashet, intet skrevet til /system)
+  /data/adb/otto/rec_test/libscreenrecord.so    testbiblioteket
+  /data/adb/post-fs-data.d/90-otto-rec-test.sh  bind-mounter det ved hver
+      opstart, FØR ly_link starter lyscrservice. Tjekker kontroltal;
+      passer det ikke, springer den over og OTTO kører som FINAL2.
+  /data/adb/otto/config/recorder_bitrate        nu: 8000000 (8 Mbit/s)
+  /data/adb/otto/rec_test/otto_rec_test.sh      styring (se nedenfor)
+
+BEVIST PÅ BORDET 25.10 21:51-22:00
+  - Indlæses ved opstart (lib sha 6b38d2df… i /system/lib).
+  - Standby-serveren kører med video_bit_rate=8000000 (fik 4194304 før).
+  - Kontroltal-sikringen virker (forkert fil -> sprunget over, normal boot).
+  - Efter-tjek 58/58 PASS.
+  IKKE bevist: billedet i bilen. Det er hele formålet med testen.
+
+I BILEN
+  1. Kør som normalt. Panorér kortet i Maps et halvt minut, zoom, kør.
+  2. Sammenlign med før: tværes billedet stadig, når kortet flyttes?
+  3. Lad OTTO køre mindst 4 minutter, før du slukker (se ADVARSEL).
+  4. Sig til Claude bagefter — Claude læser recorder.log over Wi-Fi.
+
+ÆNDRE BITRATE (Claude gør det over Wi-Fi, eller i en root-shell)
+  sh /data/adb/otto/rec_test/otto_rec_test.sh status
+  sh /data/adb/otto/rec_test/otto_rec_test.sh set 12000000   (gælder fra næste opstart)
+  Forslag til rækkefølge: 8 Mbit/s -> 12 Mbit/s. Én ændring ad gangen.
+
+SLÅ TESTEN FRA
+  sh /data/adb/otto/rec_test/otto_rec_test.sh off   og genstart OTTO.
+  Så kører FINAL2's eget bibliotek igen.
+
+HVIS DET VIRKER
+  Den bedste værdi bygges ind i et nyt image (FINAL3) og flashes via EDL,
+  som altid. Testfilerne i /data fjernes bagefter.
+
+ADVARSEL (fundet under testen, findes også i FINAL2)
+  HWC-VDS bekræftes først ca. 3½ minut efter opstart. Slukkes OTTO før,
+  slår næste opstart VDS fra (sikkerhedsfunktion). Ved korte ture kan VDS
+  derfor forsvinde. Claude kan se det i /data/adb/otto/logs/hwc_vds.log.
+
+FILER HER
+  otto_screenrecord_a17_r3.c   kilde (R20 + ændringerne ovenfor)
+  libscreenrecord.so           bygget med Termux clang 21.1.8, armv7a, -O2 -mthumb
+  90-otto-rec-test.sh, otto_rec_test.sh
+=======================================================================
