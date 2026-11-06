@@ -9,8 +9,10 @@ OTTO went from stock Android 13 to an Android 17 GSI and kept the OEM CarPlay/RC
 3. **Back up the stock super** (raw dump, gzip, SHA-256, and re-verify the gzip later).
 4. **Build a new super** offline (`../../tooling/migration/scripts/build/`):
    - `system_b` = the GSI, extracted ext4, with your changes written by `debugfs`;
-   - `vendor_b`, `vendor_dlkm_b`, `system_dlkm_b`, `odm_b` = **byte copies of the running stock partitions** (this is
-     what keeps the hardware and OEM services working);
+   - `vendor_b`, `vendor_dlkm_b`, `system_dlkm_b`, `odm_b` = **byte copies of the running Android 13 partitions** (this is
+     what keeps the hardware and OEM services working). On OTTO those already carried two small patches of ours: the
+     60 Hz fix in `vendor/lib64/libsdmcore.so` (`mov w16,#30` → `#60`, 2 bytes, in `HWDeviceDRM::PopulateDisplayAttributes`)
+     and SELinux additions (`firmware/patches/sepolicy/otto_vendor.cil`). Everything else is Ottocast's;
    - `lpmake` with the device's own layout (ours: super 6 GiB, 3 metadata slots, virtual A/B flag, one dynamic group);
      we dropped `product_b`, `system_ext_b` and `cow` to make room;
    - validate (`lpunpack` round-trip byte-identical), then `img2simg`.

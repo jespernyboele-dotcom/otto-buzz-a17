@@ -101,7 +101,7 @@ a337bc7c205b29e6f519a1a8e6f32b137e9060e5f3bbe31f7e2e79a8debf24a2  firmware/patch
 3c41f06c8585256ec8a7358634ee9c82526296dace3a9810b3364678656d05f1  firmware/patches/sepolicy/se_otto_test.sh
 b3ad0f189d66a9420e2d541ec64c9553c9b17432e8cb97634774cde64f26ece2  guides/01-root-with-magisk-over-edl/README.md
 5a6a7b6359bac21c46148aece668ebd77f32c6256cf93fbd1bc6eb77fa1f03e9  guides/02-edl-backup-and-rescue/README.md
-4887b70d41999f724f75f4eb6aaf3ea0b32a2c8153709865e38d182451ea23be  guides/03-android17-gsi-keeping-oem-carplay/README.md
+138ece991175d5e2528180fce4dc93761418b93f20f79acddd047ec70fdb9c85  guides/03-android17-gsi-keeping-oem-carplay/README.md
 1cc46f44c9f9769249ce4ee8d5640e2a140b4b4744a80aa8876109b2eed5f8d5  guides/04-carplay-projection-60fps/README.md
 3581c9139574a4d61a5b7584495bcf5756d403abcc6022dd862ecd44e288c431  guides/05-car-gps-into-android-maps/README.md
 72d1dbbb7d99e0dc0a517efe0b5eda568f302a5181d47e136ec371bd58d93c3b  guides/06-measure-real-fps-with-a-phone-camera/README.md
